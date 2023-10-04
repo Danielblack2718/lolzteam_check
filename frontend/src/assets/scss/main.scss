@@ -1,0 +1,37 @@
+main {
+    margin-top: 30px;
+    width: 100%;
+}
+
+.post {
+    padding: 1em;
+    width: 100%;
+    min-width: 900px;
+    border: 1px solid rgb(0, 102, 255);
+    border-radius: 7px;
+    animation: UpToDown 0.5s ease-in-out;
+    margin-bottom: 10px;
+
+    .title {
+        font-size: 20px;
+        font-family: 'Raleway', sans-serif;
+    }
+    .post__title{
+    font-size: 20px;
+    }
+    .post__bottom {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+    }
+    .bottom__short-desc{
+    color: rgba(134, 134, 134, 0.783);
+    }
+    .bottom__time {
+        text-align: right;
+    }
+}
+
+.post:last-child {
+    margin-bottom: 0;
+}

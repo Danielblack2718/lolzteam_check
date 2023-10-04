@@ -1,0 +1,166 @@
+@import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+* {
+  padding: 0px;
+  margin: 0px;
+  border: none;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Links */
+a, a:link, a:visited {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+/* Common */
+aside, nav, footer, header, section, main {
+  display: block;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+ul, ul li {
+  list-style: none;
+}
+
+img {
+  vertical-align: top;
+}
+
+img, svg {
+  max-width: 100%;
+  height: auto;
+}
+
+address {
+  font-style: normal;
+}
+
+/* Form */
+input, textarea, button, select {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  background-color: transparent;
+}
+
+input::-ms-clear {
+  display: none;
+}
+
+button, input[type=submit] {
+  display: inline-block;
+  box-shadow: none;
+  background-color: transparent;
+  background: none;
+  cursor: pointer;
+}
+
+input:focus, input:active,
+button:focus, button:active {
+  outline: none;
+}
+
+button::-moz-focus-inner {
+  padding: 0;
+  border: 0;
+}
+
+label {
+  cursor: pointer;
+}
+
+legend {
+  display: block;
+}
+
+header {
+  display: flex;
+  border: 2px solid gray;
+  border-top: 0;
+  border-radius: 0px 0px 10px 10px;
+  padding: 20px;
+  max-width: 300px;
+  align-items: center;
+  gap: 20px;
+  animation: UpToDown 1s ease-in-out;
+}
+header h1 {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+}
+
+#app {
+  max-width: 1200px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+main {
+  margin-top: 30px;
+  width: 100%;
+}
+
+.post {
+  padding: 1em;
+  width: 100%;
+  min-width: 900px;
+  border: 1px solid rgb(0, 102, 255);
+  border-radius: 7px;
+  animation: UpToDown 0.5s ease-in-out;
+  margin-bottom: 10px;
+}
+.post .title {
+  font-size: 20px;
+  font-family: "Raleway", sans-serif;
+}
+.post .post__title {
+  font-size: 20px;
+}
+.post .post__bottom {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+.post .bottom__short-desc {
+  color: rgba(134, 134, 134, 0.783);
+}
+.post .bottom__time {
+  text-align: right;
+}
+
+.post:last-child {
+  margin-bottom: 0;
+}
+
+@keyframes UpToDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-100px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+* {
+  font-family: "Raleway";
+}/*# sourceMappingURL=style.css.map */
