@@ -1,7 +1,7 @@
 <template>
   <header>
-    <img src="../assets/img/logo.png" width="25" alt="">
-    <h1>Блог</h1>
+    <a href="/"><img src="../assets/img/logo.png" width="25" alt=""></a>
+    <h1>{{ title }}</h1>
   </header>
 </template>
 
@@ -9,7 +9,7 @@
   export default {
     name: 'MHeader',
     props: {
-      msg: String
+      title: String
     }
   }
 </script>

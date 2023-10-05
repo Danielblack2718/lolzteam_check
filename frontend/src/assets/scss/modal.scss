@@ -1,0 +1,59 @@
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.5s;
+}
+
+.fade-enter,
+.fade-leave-to {
+    opacity: 0;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $white;
+}
+
+.modal__content {
+    background-color: $bg-header;
+    padding: 20px;
+    border-radius: 5px;
+    border: 2px solid $green;
+}
+
+.modal__top {
+    display: flex;
+    justify-content: space-between;
+
+    button {
+        color: $gray;
+    }
+}
+
+.modal__body {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    gap: 10px;
+
+    input {
+        border: 2px solid $gray;
+        padding: 5px;
+        border-radius: 7px;
+        outline: none;
+    }
+
+    textarea {
+        border: 2px solid $gray;
+        padding: 5px;
+        border-radius: 7px;
+        outline: none;
+    }
+}

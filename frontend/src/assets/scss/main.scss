@@ -3,35 +3,129 @@ main {
     width: 100%;
 }
 
-.post {
+.post__item {
     padding: 1em;
     width: 100%;
     min-width: 900px;
-    border: 1px solid rgb(0, 102, 255);
+    border: 2px solid $green;
     border-radius: 7px;
     animation: UpToDown 0.5s ease-in-out;
     margin-bottom: 10px;
+    background-color: $bg-body;
+    transition: all 0.5s ease-in-out;
+
+    &:hover {
+        background-color: $bg-hover-post;
+        transform: scale(1.01);
+    }
+
+    &:last-child {
+        margin-bottom: 0;
+    }
 
     .title {
         font-size: 20px;
         font-family: 'Raleway', sans-serif;
     }
-    .post__title{
-    font-size: 20px;
-    }
-    .post__bottom {
+
+    .post__title {
+        font-size: 20px;
+        color: $white;
+        width: 100%;
+        overflow: hidden;
         display: flex;
-        justify-content: space-between;
-        flex-direction: column;
+        text-overflow: ellipsis;
     }
-    .bottom__short-desc{
-    color: rgba(134, 134, 134, 0.783);
-    }
-    .bottom__time {
+
+    .post__bottom {
         text-align: right;
+        display: flex;
+        gap: 10px;
+        justify-content: end;
+
+        .bottom__author {
+            color: $gray;
+        }
+
+        .bottom__time {
+            text-align: right;
+            color: $gray;
+        }
+    }
+
+    .post__short-desc {
+        color: $gray;
+    }
+
+}
+
+nav {
+    display: flex !important;
+    justify-content: center;
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+.pagination {
+    list-style: none;
+    padding: 0;
+    display: flex;
+
+    li {
+        margin: 0 5px;
+        border: 2px solid $green;
+        padding: 5px;
+        border-radius: 5px;
+        transition: all 0.5s;
+        &.active {
+            font-weight: bold;
+            background-color: #363636;
+        }
+
+        &:hover {
+            background-color: #363636;
+        }
+    }
+
+    a {
+        text-decoration: none;
+        color: $white;
+        display: flex;
+
+
+    }
+
+    span {
+        margin: 0 5px;
+        color: $white;
     }
 }
 
-.post:last-child {
-    margin-bottom: 0;
+.non-active {
+    border: 2px solid $gray !important;
+
+    a {
+        color: $gray;
+
+        svg {
+            g {
+                path {
+                    stroke: $gray;
+                }
+            }
+        }
+    }
+
+
+}
+
+.create_post {
+    width: 100%;
+    padding: 15px;
+    background-color: $green;
+    color: $white;
+    display: flex;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    animation: UpToDown 0.5s ease-in-out;
 }

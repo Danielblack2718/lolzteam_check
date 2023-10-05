@@ -87,23 +87,34 @@ legend {
 
 header {
   display: flex;
-  border: 2px solid gray;
+  border: 2px solid rgb(34, 142, 93);
   border-top: 0;
   border-radius: 0px 0px 10px 10px;
   padding: 20px;
   max-width: 300px;
   align-items: center;
   gap: 20px;
+  background-color: rgb(39, 39, 39);
   animation: UpToDown 1s ease-in-out;
 }
 header h1 {
   font-size: 20px;
   font-weight: bold;
+  color: white;
+}
+
+* {
+  font-family: "Raleway";
+}
+
+.pointer {
+  cursor: pointer;
 }
 
 body {
   display: flex;
   justify-content: center;
+  background-color: #303030;
 }
 
 #app {
@@ -119,36 +130,185 @@ main {
   width: 100%;
 }
 
-.post {
+.post__item {
   padding: 1em;
   width: 100%;
   min-width: 900px;
-  border: 1px solid rgb(0, 102, 255);
+  border: 2px solid rgb(34, 142, 93);
   border-radius: 7px;
   animation: UpToDown 0.5s ease-in-out;
   margin-bottom: 10px;
+  background-color: #303030;
+  transition: all 0.5s ease-in-out;
 }
-.post .title {
+.post__item:hover {
+  background-color: #363636;
+  transform: scale(1.01);
+}
+.post__item:last-child {
+  margin-bottom: 0;
+}
+.post__item .title {
   font-size: 20px;
   font-family: "Raleway", sans-serif;
 }
-.post .post__title {
+.post__item .post__title {
   font-size: 20px;
+  color: white;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  text-overflow: ellipsis;
+}
+.post__item .post__bottom {
+  text-align: right;
+  display: flex;
+  gap: 10px;
+  justify-content: end;
+}
+.post__item .post__bottom .bottom__author {
+  color: rgba(134, 134, 134, 0.783);
+}
+.post__item .post__bottom .bottom__time {
+  text-align: right;
+  color: rgba(134, 134, 134, 0.783);
+}
+.post__item .post__short-desc {
+  color: rgba(134, 134, 134, 0.783);
+}
+
+nav {
+  display: flex !important;
+  justify-content: center;
+  margin-top: 10px;
+  margin-bottom: 15px;
+}
+
+.pagination {
+  list-style: none;
+  padding: 0;
+  display: flex;
+}
+.pagination li {
+  margin: 0 5px;
+  border: 2px solid rgb(34, 142, 93);
+  padding: 5px;
+  border-radius: 5px;
+  transition: all 0.5s;
+}
+.pagination li.active {
+  font-weight: bold;
+  background-color: #363636;
+}
+.pagination li:hover {
+  background-color: #363636;
+}
+.pagination a {
+  text-decoration: none;
+  color: white;
+  display: flex;
+}
+.pagination span {
+  margin: 0 5px;
+  color: white;
+}
+
+.non-active {
+  border: 2px solid rgba(134, 134, 134, 0.783) !important;
+}
+.non-active a {
+  color: rgba(134, 134, 134, 0.783);
+}
+.non-active a svg g path {
+  stroke: rgba(134, 134, 134, 0.783);
+}
+
+.create_post {
+  width: 100%;
+  padding: 15px;
+  background-color: rgb(34, 142, 93);
+  color: white;
+  display: flex;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  animation: UpToDown 0.5s ease-in-out;
+}
+
+.post {
+  padding: 1em;
+  width: 900px;
+  border: 2px solid rgb(34, 142, 93);
+  border-radius: 7px;
+  animation: UpToDown 0.5s ease-in-out;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+}
+.post .post__title {
+  font-size: 25px;
+  color: white;
+}
+.post .post__desc {
+  font-size: 20px;
+  color: rgba(134, 134, 134, 0.783);
 }
 .post .post__bottom {
   display: flex;
-  justify-content: space-between;
-  flex-direction: column;
+  gap: 10px;
+  text-align: right;
+  justify-content: end;
 }
-.post .bottom__short-desc {
+.post .post__bottom .bottom__author {
   color: rgba(134, 134, 134, 0.783);
 }
-.post .bottom__time {
-  text-align: right;
+.post .post__bottom .bottom__time {
+  color: rgba(134, 134, 134, 0.783);
 }
 
-.post:last-child {
-  margin-bottom: 0;
+.review {
+  padding: 1em;
+  width: 900px;
+  border: 2px solid rgb(34, 142, 93);
+  border-radius: 7px;
+  animation: UpToDown 0.5s ease-in-out;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+.review .review__h2 {
+  font-size: 20px;
+  color: white;
+}
+
+.reviews__content {
+  margin-bottom: 20px;
+}
+
+.reviews__item {
+  padding: 1em;
+  width: 900px;
+  border: 2px solid rgb(34, 142, 93);
+  border-radius: 7px;
+  animation: UpToDown 0.5s ease-in-out;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+}
+.reviews__item .review__top {
+  display: flex;
+  gap: 10px;
+}
+.reviews__item .review__author {
+  color: white;
+}
+.reviews__item .review__time {
+  color: white;
+}
+.reviews__item .review__desc {
+  color: rgba(134, 134, 134, 0.783);
+  margin-top: 10px;
 }
 
 @keyframes UpToDown {
@@ -161,6 +321,59 @@ main {
     transform: translateY(0);
   }
 }
-* {
-  font-family: "Raleway";
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.modal__content {
+  background-color: rgb(39, 39, 39);
+  padding: 20px;
+  border-radius: 5px;
+  border: 2px solid rgb(34, 142, 93);
+}
+
+.modal__top {
+  display: flex;
+  justify-content: space-between;
+}
+.modal__top button {
+  color: rgba(134, 134, 134, 0.783);
+}
+
+.modal__body {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  gap: 10px;
+}
+.modal__body input {
+  border: 2px solid rgba(134, 134, 134, 0.783);
+  padding: 5px;
+  border-radius: 7px;
+  outline: none;
+}
+.modal__body textarea {
+  border: 2px solid rgba(134, 134, 134, 0.783);
+  padding: 5px;
+  border-radius: 7px;
+  outline: none;
 }/*# sourceMappingURL=style.css.map */

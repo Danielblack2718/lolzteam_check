@@ -1,20 +1,20 @@
 <template>
-  <div class="post">
-        <span class="post__title">{{ title }}</span>
-        <div class="post__bottom">
-            <span class="bottom__short-desc">{{ short_desc }}</span>
-            <span class="bottom__time">{{ time }}</span>
-        </div>
-    </div>
+    <MHeader title="Статья"></MHeader>
+    <MPost></MPost>
+    <MReviews></MReviews>
 </template>
-
+  
 <script>
-  export default {
-    name: 'MMain',
-    props: {
-      title: String,
-      short_desc: String,
-      time: String
-    }
-  }
+import MPost from './Post/Post.vue';
+import MHeader from './Header.vue';
+import MReviews from './Post/Review/Review.vue';
+export default {
+    name: 'App',
+    components: {
+        MPost,
+        MHeader,
+        MReviews,
+     
+    },
+}
 </script>

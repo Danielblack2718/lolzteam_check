@@ -1,12 +1,13 @@
 header {
   display: flex;
-  border: 2px solid gray;
+  border: 2px solid rgb(34, 142, 93);
   border-top: 0;
   border-radius: 0px 0px 10px 10px;
   padding: 20px;
   max-width: 300px;
   align-items: center;
   gap: 20px;
+  background-color: rgb(39, 39, 39);
   animation: UpToDown 1s ease-in-out;
 }
 header h1 {

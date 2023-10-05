@@ -1,6 +1,15 @@
+* {
+    font-family: 'Raleway';
+}
+
+.pointer {
+    cursor: pointer;
+}
+
 body {
     display: flex;
     justify-content: center;
+    background-color: $bg-body;
 }
 
 #app {
