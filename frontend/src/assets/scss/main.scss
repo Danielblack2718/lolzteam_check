@@ -5,8 +5,8 @@ main {
 
 .post__item {
     padding: 1em;
-    width: 100%;
-    min-width: 900px;
+    width: 100vw;
+    max-width: 900px;
     border: 2px solid $green;
     border-radius: 7px;
     animation: UpToDown 0.5s ease-in-out;

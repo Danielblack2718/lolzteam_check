@@ -9,7 +9,7 @@
             <input type="text" id="author" placeholder="Ваше имя">
             <label for="description">Описание комментария</label>
             <textarea name="" id="description" placeholder="Отзыв"></textarea>
-                
+            <button class="btn btn-primary" @click="addReview()">Добавить</button>
         </Modal>
     </div>
     <div class="reviews__content">
@@ -45,12 +45,21 @@ export default {
         },
         goToPage(page) {
             this.currentPage = page;
+        },
+        addReview() {
+            this.review.push({
+                id: this.review.length + 1,
+                desc: document.getElementById('description').value,
+                author: document.getElementById('author').value,
+                time: new Date().toLocaleString(),
+            });
         }
     },
+
     data() {
         return {
             currentPage: 1,
-            pageSize: 10,
+            pageSize: 20,
             review: [
                 { id: 1, desc: 'Description 1', time: 'Time 1', author: 'Daniel' },
                 { id: 2, desc: 'Description 1', time: 'Time 1', author: 'Daniel' },

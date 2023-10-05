@@ -132,8 +132,8 @@ main {
 
 .post__item {
   padding: 1em;
-  width: 100%;
-  min-width: 900px;
+  width: 100vw;
+  max-width: 900px;
   border: 2px solid rgb(34, 142, 93);
   border-radius: 7px;
   animation: UpToDown 0.5s ease-in-out;
@@ -236,7 +236,8 @@ nav {
 
 .post {
   padding: 1em;
-  width: 900px;
+  width: 100vw;
+  max-width: 900px;
   border: 2px solid rgb(34, 142, 93);
   border-radius: 7px;
   animation: UpToDown 0.5s ease-in-out;
@@ -268,7 +269,8 @@ nav {
 
 .review {
   padding: 1em;
-  width: 900px;
+  width: 100vw;
+  max-width: 900px;
   border: 2px solid rgb(34, 142, 93);
   border-radius: 7px;
   animation: UpToDown 0.5s ease-in-out;
@@ -288,7 +290,8 @@ nav {
 
 .reviews__item {
   padding: 1em;
-  width: 900px;
+  width: 100vw;
+  max-width: 900px;
   border: 2px solid rgb(34, 142, 93);
   border-radius: 7px;
   animation: UpToDown 0.5s ease-in-out;
@@ -319,6 +322,11 @@ nav {
   100% {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+@media screen and (max-width: 930px) {
+  main {
+    padding: 15px;
   }
 }
 .fade-enter-active,

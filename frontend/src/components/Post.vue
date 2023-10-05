@@ -1,7 +1,11 @@
 <template>
     <MHeader title="Статья"></MHeader>
-    <MPost></MPost>
-    <MReviews></MReviews>
+    <main>
+        <MPost></MPost>
+        <MReviews></MReviews>
+
+        
+    </main>
 </template>
   
 <script>
@@ -14,7 +18,6 @@ export default {
         MPost,
         MHeader,
         MReviews,
-     
     },
 }
 </script>

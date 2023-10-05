@@ -1,6 +1,7 @@
 .post {
     padding: 1em;
-    width: 900px;
+    width: 100vw;
+    max-width: 900px;
     border: 2px solid $green;
     border-radius: 7px;
     animation: UpToDown 0.5s ease-in-out;
@@ -39,7 +40,8 @@
 
 .review {
     padding: 1em;
-    width: 900px;
+    width: 100vw;
+    max-width: 900px;
     border: 2px solid $green;
     border-radius: 7px;
     animation: UpToDown 0.5s ease-in-out;
@@ -63,7 +65,8 @@
 
 .reviews__item {
     padding: 1em;
-    width: 900px;
+    width: 100vw;
+    max-width: 900px;
     border: 2px solid $green;
     border-radius: 7px;
     animation: UpToDown 0.5s ease-in-out;
