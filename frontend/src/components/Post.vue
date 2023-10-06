@@ -1,23 +1,32 @@
 <template>
     <MHeader title="Статья"></MHeader>
     <main>
-        <MPost></MPost>
-        <MReviews></MReviews>
-
-        
+        <MPost :id="postId"></MPost>
     </main>
 </template>
   
 <script>
 import MPost from './Post/Post.vue';
 import MHeader from './Header.vue';
-import MReviews from './Post/Review/Review.vue';
+
 export default {
     name: 'App',
     components: {
         MPost,
         MHeader,
-        MReviews,
+        
     },
+    props: {
+        admin: {
+            type: Boolean,
+            default: false
+        }
+    },
+    data() {
+        return {
+            postId: this.$route.params.id
+        };
+    }
+
 }
 </script>

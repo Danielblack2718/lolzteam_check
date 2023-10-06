@@ -5,22 +5,42 @@
                 {{ review.author }}
             </span>
             <span class="review__time">
-                {{  review.time }}
+                {{ review.time }}
             </span>
         </div>
         <span class="review__desc">
-           {{  review.desc }}
+            {{ review.desc }}
         </span>
-
+        <div class="admin_buttons" v-if="adminKey">
+            <div class="button red" @click="showModal = true;">Удалить</div>
+        </div>
     </div>
+
+    <Modal v-if="showModal" @close="showModal = false" title="Удалить пост">
+        <label for="">Вы действительно хотите удалить пост?</label>
+        <div class="modal__bottom">
+            <button class="button red" @click="deletePost()">Удалить</button>
+        </div>
+    </Modal>
 </template>
     
 <script>
+import Modal from '../../Modal/Modal.vue';
 
 export default {
     name: 'MReviewItem',
     props: {
-        review: Object
+        review: Object,
+        admin: Boolean
+    },
+    components: {
+        Modal
+    },
+    data() {
+        return {
+            showModal: false,
+            adminKey: this.$cookies.get("adminKey")
+        };
     }
 }
 </script>

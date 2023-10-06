@@ -1,7 +1,8 @@
 // router.js
 import { createRouter, createWebHistory } from 'vue-router';
-import MMain from './components/Home.vue'; // Импортируйте ваши компоненты
-import MPost from './components/Post.vue'; // Импортируйте ваши компоненты
+import MMain from './components/Home.vue'; 
+import MPost from './components/Post.vue'; 
+import MAdmin from './components/Admin.vue';
 
 const routes = [
   {
@@ -12,7 +13,12 @@ const routes = [
   {
     path: '/post/:id',
     name: 'Post',
-    component: MPost // Путь до вашего компонента поста
+    component: MPost 
+  },
+  {
+    path: '/admin',
+    name: 'Admin',
+    component: MAdmin 
   }
 ];
 

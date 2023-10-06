@@ -25,7 +25,7 @@
                     <button class="button green" @click="addPost()">Добавить</button>
                 </div>
             </Modal>
-            <Post v-for="(post, index) in displayedPosts" :key="index" :post="post" />
+            <Post v-for="(post, index) in displayedPosts" :key="index" :post="post" :admin="true"/>
         </div>
 
         <!-- FILEPATH: d:\Lolzteam\frontend\src\components\Main\Main.vue -->
@@ -91,16 +91,14 @@ It imports the Post and Modal components and uses them to display the posts.
  The Modal component is used to display a modal window when a post is clicked. 
 -->
 <script>
-import Post from './Post.vue';
+import Post from '../Main/Post.vue';
 import Modal from '../Modal/Modal.vue';
+
 export default {
     name: 'MMain',
     components: {
         Post,
         Modal
-    },
-    props: {
-        admin: Boolean
     },
     data() {
         return {
@@ -117,39 +115,6 @@ export default {
                 { id: 10, title: 'Post 8', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
                 { id: 12, title: 'Post 14', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
                 { id: 14, title: 'Post 9', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-
-                { id: 156, title: 'Post 1', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 15, title: 'Post 150', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 15, title: 'Post 1', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-
-                { id: 132, title: 'Post 2', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 156436, title: 'Post 161', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 156, title: 'Post 1', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 15, title: 'Post 150', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 15, title: 'Post 1', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-
-                { id: 132, title: 'Post 2', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 156436, title: 'Post 161', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 156, title: 'Post 1', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 15, title: 'Post 150', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 15, title: 'Post 1', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-
-                { id: 132, title: 'Post 2', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 156436, title: 'Post 161', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 156, title: 'Post 1', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 15, title: 'Post 150', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 15, title: 'Post 1', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-
-                { id: 132, title: 'Post 2', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 156436, title: 'Post 161', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 156, title: 'Post 1', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 15, title: 'Post 150', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 15, title: 'Post 1', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-
-                { id: 132, title: 'Post 2', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 156436, title: 'Post 161', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 4, title: '534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534', short_desc: 'Description 1', time: 'Time 1', author: 'Daniel' },
-
             ],
             showModal: false
         };

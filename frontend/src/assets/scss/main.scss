@@ -14,9 +14,12 @@ main {
     background-color: $bg-body;
     transition: all 0.5s ease-in-out;
 
+    
+
     &:hover {
         background-color: $bg-hover-post;
         transform: scale(1.01);
+
     }
 
     &:last-child {
@@ -35,6 +38,10 @@ main {
         overflow: hidden;
         display: flex;
         text-overflow: ellipsis;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
     }
 
     .post__bottom {
@@ -55,6 +62,12 @@ main {
 
     .post__short-desc {
         color: $gray;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        /* number of lines to show */
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
     }
 
 }
@@ -77,6 +90,7 @@ nav {
         padding: 5px;
         border-radius: 5px;
         transition: all 0.5s;
+
         &.active {
             font-weight: bold;
             background-color: #363636;
@@ -128,4 +142,68 @@ nav {
     margin-bottom: 10px;
     border-radius: 5px;
     animation: UpToDown 0.5s ease-in-out;
+}
+
+.btn_add {
+    margin-left: auto;
+    background-color: $green;
+    color: $white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    transition: all 0.5s ease-in-out;
+    cursor: pointer;
+
+    &:hover {
+        background-color: $green-hover;
+    }
+}
+.button {
+    display: flex;
+
+    width: 100%;
+    height: 20px;
+
+    border-radius: 8px;
+    justify-content: center;
+    text-align: center;
+    cursor: pointer;
+
+    &.red {
+        background-color: $red;
+
+        &:hover {
+            background-color: $red-hover;
+        }
+    }
+
+    &.green {
+        background-color: $green;
+
+        &:hover {
+            background-color: $green-hover;
+        }
+    }
+
+    &.gray {
+        background-color: $gray;
+
+        &:hover {
+            background-color: $gray-hover;
+        }
+    }
+}
+.btn_delete {
+    margin-left: auto;
+    background-color: $red;
+    color: $white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    transition: all 0.5s ease-in-out;
+    cursor: pointer;
+
+    &:hover {
+        background-color: $red-hover;
+    }
 }
