@@ -9,23 +9,31 @@
         The component also displays all the existing posts using the Post component.
         -->
         <div class="posts">
-            <span @click="showModal = true;" class="create_post pointer">Добавить пост</span>
-            <Modal v-if="showModal" @close="showModal = false" title="Добавить пост">
-                <label for="author">Автор поста</label>
-                <input type="text" id="author" placeholder="Ваше имя">
-                <label for="title">Заголовок</label>
-                <input type="text" id="title" placeholder="Заголовок">
-                <label for="short_desc">Краткое описание поста</label>
-                <textarea name="" id="short_desc" placeholder="Краткое описание поста"></textarea>
-                <label for="description">Описание поста</label>
-                <textarea name="" id="description" placeholder="Описание поста"></textarea>
+            <div v-if="loading" class="loader">
+            </div>
+            <div v-else>
+                <span @click="showModal = true;" class="create_post pointer">Добавить пост</span>
+                <Modal v-if="showModal" @close="showModal = false" title="Добавить пост">
+                    <label for="author">Автор поста</label>
+                    <input type="text" id="author" placeholder="Ваше имя">
+                    <label for="title">Заголовок</label>
+                    <input type="text" id="title" placeholder="Заголовок">
+                    <label for="short_desc">Краткое описание поста</label>
+                    <textarea name="" id="short_desc" placeholder="Краткое описание поста"></textarea>
+                    <label for="description">Описание поста</label>
+                    <textarea name="" id="description" placeholder="Описание поста"></textarea>
 
-                <div class="modal__bottom">
-                    <span class="error">Не все поля заполнены</span>
-                    <button class="button green" @click="addPost()">Добавить</button>
+                    <div class="modal__bottom">
+                        <span class="error">Не все поля заполнены</span>
+                        <button class="button green" @click="addPost()">Добавить</button>
+                    </div>
+                </Modal>
+                <Post v-for="(post) in displayedPosts" :key="post.id" :post="JSON.parse(JSON.stringify(post))" :admin="true"
+                    @deleted="onPostDeleted" />
+                <div v-if="displayedPosts.length == 0" class="post__item">
+                    Постов нет
                 </div>
-            </Modal>
-            <Post v-for="(post, index) in displayedPosts" :key="index" :post="post" :admin="true"/>
+            </div>
         </div>
 
         <!-- FILEPATH: d:\Lolzteam\frontend\src\components\Main\Main.vue -->
@@ -49,7 +57,7 @@
                         </svg>
                     </a>
                 </li>
-                <li :class="{ active: currentPage === 1 }">
+                <li :class="{ active: currentPage === 1 }" v-if="totalPages != 1">
                     <a @click="goToPage(1)">1</a>
                 </li>
                 <li v-if="currentPage > 2">
@@ -62,7 +70,7 @@
                 <li v-if="totalPages > 1 && currentPage != totalPages && currentPage != totalPages - 1">
                     <span>...</span>
                 </li>
-                <li :class="{ active: currentPage === totalPages }">
+                <li :class="{ active: currentPage === totalPages }" v-if="totalPages != 0">
                     <a @click="goToPage(totalPages)">{{ totalPages
                     }}</a>
                 </li>
@@ -96,6 +104,7 @@ import Modal from '../Modal/Modal.vue';
 
 export default {
     name: 'MMain',
+    emits: ['deleted'],
     components: {
         Post,
         Modal
@@ -104,19 +113,10 @@ export default {
         return {
             currentPage: 1,
             pageSize: 10,
-            posts: [
-                { id: 4, title: '534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534', short_desc: 'Description 1', time: 'Time 1', author: 'Daniel' },
-                { id: 5, title: 'Posription 1Description 1Description 1Description 1Dription 1Description 1Description 1Description 1Dription 1Description 1Description 1Description 1Dription 1Description 1Description 1Description 1Dription 1Description 1Description 1Description 1Dt 1', short_desc: 'Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 6, title: 'Post 6', short_desc: 'Description 1', time: 'Time 1', author: 'Daniel' },
-
-                { id: 7, title: 'Post 13', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 8, title: 'Post 7', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 9, title: 'Post 1', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 10, title: 'Post 8', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 12, title: 'Post 14', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 14, title: 'Post 9', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-            ],
-            showModal: false
+            posts: [],
+            showModal: false,
+            loading: true,
+            intervalId: null
         };
     },
     computed: {
@@ -129,7 +129,49 @@ export default {
             return this.posts.slice(start, end);
         }
     },
+    mounted() {
+        this.fetchPosts();
+        this.intervalId = setInterval(() => {
+            this.fetchPosts();
+        }, 15000); // 15 секунд = 15000 мс
+    },
+    beforeUnmount() { // замените beforeDestroy на beforeUnmount
+        if (this.intervalId) {
+            clearInterval(this.intervalId);
+        }
+    },
     methods: {
+        onPostDeleted(id) {
+            this.posts = this.posts.filter(post => post.id !== id);
+            this.displayedPosts = this.displayedPosts.filter(post => post.id !== id);
+        },
+        async fetchPosts() {
+            try {
+                fetch('http://localhost/public/api/posts')
+                    .then(response => {
+                        if (!response.ok) {
+                            this.loading = false;
+                            throw new Error('Network response was not ok');
+                        }
+
+                        return response.json();
+                    })
+                    .then(data => {
+                        this.posts = data;
+                        this.loading = false;
+                    })
+                    .catch(error => {
+                        this.loading = false;
+                        console.error('There has been a problem with your fetch operation:', error);
+                    });
+
+            } catch (error) {
+                console.error('There was an error fetching the posts!', error);
+            }
+
+
+
+        },
         previousPage() {
             this.currentPage -= 1;
         },

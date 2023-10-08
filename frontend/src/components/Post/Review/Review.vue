@@ -10,13 +10,13 @@
             <label for="description">Описание комментария</label>
             <textarea name="" id="description" placeholder="Отзыв"></textarea>
             <div class="modal__bottom">
-                    <span class="error">Не все поля заполнены</span>
-                    <button class="button green" @click="addReview()">Добавить</button>
-                </div>
+                <span class="error">Не все поля заполнены</span>
+                <button class="button green" @click="addReview()">Добавить</button>
+            </div>
         </Modal>
     </div>
     <div class="reviews__content">
-        <MReviewItem v-for="(review, index) in LocalReview" :key="index" :review="review" :admin="admin"></MReviewItem>  
+        <MReviewItem v-for="(review) in LocalReview" :key="review.id" :review="review" :admin="admin" @delete="removeReview"></MReviewItem>
     </div>
 </template>
     
@@ -43,7 +43,7 @@ export default {
     },
     computed: {
         totalReviews() {
-            if(this.LocalReview){
+            if (this.LocalReview) {
                 return this.LocalReview.length;
             }
             else return 0;
@@ -58,6 +58,9 @@ export default {
         }
     },
     methods: {
+        removeReview(id) {
+            this.LocalReview = this.LocalReview.filter(LocalReview => LocalReview.id !== id);
+        },
         previousPage() {
             this.currentPage -= 1;
         },
@@ -70,8 +73,8 @@ export default {
         addReview() {
             var author = document.getElementById('author');
             var description = document.getElementById('description');
-            
-            author.classList.remove('error_input');    
+
+            author.classList.remove('error_input');
             description.classList.remove('error_input');
             if (author.value == '') {
                 document.querySelector('.error').style.display = 'block';
@@ -86,18 +89,45 @@ export default {
 
             document.querySelector('.error').style.display = 'none';
             this.showModal = false;
-            if(this.LocalReview == null) this.LocalReview = new Array();
-            this.LocalReview.push({
-                id: this.LocalReview.length + 1,
-                author: author.value,
-                desc: description.value,
-                time: new Date().toLocaleString()
 
+
+            if (this.LocalReview == null) this.LocalReview = new Array();
+            try {
+                fetch('http://localhost/public/api/review', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        author: author.value,
+                        desc: description.value,
+                        post_id: this.$route.params.id,
+                        time: new Date().toISOString().slice(0, 19)
+                    })
+                })
+                    .then(response => {
+                        console.log(response)
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log(data);
+                        this.LocalReview.push({
+                            id: this.LocalReview.length + 1,
+                            author: author.value,
+                            desc: description.value,
+                            time: new Date().toISOString().slice(0, 19)
+                        }
+                        );
+                    })
+                    .catch(error => {
+                        console.error('There has been a problem with your fetch operation:', error);
+                    });
+            } catch (error) {
+                console.error('There was an error fetching the posts!', error);
             }
-            );
-            
-            author.value = '';
-            description.value = '';
         },
     },
 

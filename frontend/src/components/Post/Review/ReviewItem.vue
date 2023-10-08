@@ -19,7 +19,7 @@
     <Modal v-if="showModal" @close="showModal = false" title="Удалить пост">
         <label for="">Вы действительно хотите удалить пост?</label>
         <div class="modal__bottom">
-            <button class="button red" @click="deletePost()">Удалить</button>
+            <button class="button red" @click="deleteReview()">Удалить</button>
         </div>
     </Modal>
 </template>
@@ -35,6 +35,30 @@ export default {
     },
     components: {
         Modal
+    },
+    methods: {
+        deleteReview() {
+            this.showModal = false;
+            try {
+                fetch(`http://localhost/public/api/review/${this.review.id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json;charset=utf-8'
+                    },
+                    body: JSON.stringify({
+                        adminKey: this.adminKey
+                    })
+                })
+                    .then(response => response.json())
+                    .then(result => {
+                        console.log(result);
+                        this.$emit('delete', this.review.id); // отправка события delete
+                    })
+                    .catch(error => console.log(error));
+            } catch (e) {
+                console.log(e);
+            }
+        }
     },
     data() {
         return {

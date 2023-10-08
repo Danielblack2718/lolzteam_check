@@ -8,25 +8,35 @@
         The user can add a new post by filling out the input fields and clicking the "Добавить" button. If any of the input fields are empty, an error message is displayed. 
         The component also displays all the existing posts using the Post component.
         -->
-        <div class="posts">
-            <span @click="showModal = true;" class="create_post pointer">Добавить пост</span>
-            <Modal v-if="showModal" @close="showModal = false" title="Добавить пост">
-                <label for="author">Автор поста</label>
-                <input type="text" id="author" placeholder="Ваше имя">
-                <label for="title">Заголовок</label>
-                <input type="text" id="title" placeholder="Заголовок">
-                <label for="short_desc">Краткое описание поста</label>
-                <textarea name="" id="short_desc" placeholder="Краткое описание поста"></textarea>
-                <label for="description">Описание поста</label>
-                <textarea name="" id="description" placeholder="Описание поста"></textarea>
 
-                <div class="modal__bottom">
-                    <span class="error">Не все поля заполнены</span>
-                    <button class="button green" @click="addPost()">Добавить</button>
+        <div class="posts">
+            <div v-if="loading" class="loader">
+            </div>
+            <div v-else>
+                <span @click="showModal = true;" class="create_post pointer">Добавить пост</span>
+                <Modal v-if="showModal" @close="showModal = false" title="Добавить пост">
+                    <label for="author">Автор поста</label>
+                    <input type="text" id="author" placeholder="Ваше имя">
+                    <label for="title">Заголовок</label>
+                    <input type="text" id="title" placeholder="Заголовок">
+                    <label for="short_desc">Краткое описание поста</label>
+                    <textarea name="" id="short_desc" placeholder="Краткое описание поста"></textarea>
+                    <label for="description">Описание поста</label>
+                    <textarea name="" id="description" placeholder="Описание поста"></textarea>
+
+                    <div class="modal__bottom">
+                        <span class="error">Не все поля заполнены</span>
+                        <button class="button green" @click="addPost()">Добавить</button>
+                    </div>
+                </Modal>
+
+                <Post v-for="(post) in displayedPosts" :key="post.id" :post="JSON.parse(JSON.stringify(post))" @deleted="onPostDeleted"/>
+                <div v-if="posts.length == 0" class="post__item">
+                    Постов нет
                 </div>
-            </Modal>
-            <Post v-for="(post, index) in displayedPosts" :key="index" :post="post" />
+            </div>
         </div>
+
 
         <!-- FILEPATH: d:\Lolzteam\frontend\src\components\Main\Main.vue -->
         <!--
@@ -49,7 +59,7 @@
                         </svg>
                     </a>
                 </li>
-                <li :class="{ active: currentPage === 1 }">
+                <li :class="{ active: currentPage === 1 }" v-if="totalPages != 1">
                     <a @click="goToPage(1)">1</a>
                 </li>
                 <li v-if="currentPage > 2">
@@ -62,7 +72,7 @@
                 <li v-if="totalPages > 1 && currentPage != totalPages && currentPage != totalPages - 1">
                     <span>...</span>
                 </li>
-                <li :class="{ active: currentPage === totalPages }">
+                <li :class="{ active: currentPage === totalPages }" v-if="totalPages != 0">
                     <a @click="goToPage(totalPages)">{{ totalPages
                     }}</a>
                 </li>
@@ -95,6 +105,7 @@ import Post from './Post.vue';
 import Modal from '../Modal/Modal.vue';
 export default {
     name: 'MMain',
+    emits: ['deleted'],
     components: {
         Post,
         Modal
@@ -106,65 +117,51 @@ export default {
         return {
             currentPage: 1,
             pageSize: 10,
-            posts: [
-                { id: 4, title: '534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534', short_desc: 'Description 1', time: 'Time 1', author: 'Daniel' },
-                { id: 5, title: 'Posription 1Description 1Description 1Description 1Dription 1Description 1Description 1Description 1Dription 1Description 1Description 1Description 1Dription 1Description 1Description 1Description 1Dription 1Description 1Description 1Description 1Dt 1', short_desc: 'Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 6, title: 'Post 6', short_desc: 'Description 1', time: 'Time 1', author: 'Daniel' },
-
-                { id: 7, title: 'Post 13', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 8, title: 'Post 7', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 9, title: 'Post 1', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 10, title: 'Post 8', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 12, title: 'Post 14', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 14, title: 'Post 9', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-
-                { id: 156, title: 'Post 1', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 15, title: 'Post 150', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 15, title: 'Post 1', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-
-                { id: 132, title: 'Post 2', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 156436, title: 'Post 161', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 156, title: 'Post 1', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 15, title: 'Post 150', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 15, title: 'Post 1', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-
-                { id: 132, title: 'Post 2', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 156436, title: 'Post 161', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 156, title: 'Post 1', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 15, title: 'Post 150', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 15, title: 'Post 1', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-
-                { id: 132, title: 'Post 2', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 156436, title: 'Post 161', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 156, title: 'Post 1', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 15, title: 'Post 150', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 15, title: 'Post 1', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-
-                { id: 132, title: 'Post 2', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 156436, title: 'Post 161', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 156, title: 'Post 1', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 15, title: 'Post 150', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 15, title: 'Post 1', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-
-                { id: 132, title: 'Post 2', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 156436, title: 'Post 161', short_desc: 'Description 1', desc: 'sadfsdfsdsdfsd', time: 'Time 1', author: 'Daniel' },
-                { id: 4, title: '534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534534', short_desc: 'Description 1', time: 'Time 1', author: 'Daniel' },
-
-            ],
-            showModal: false
+            posts: [],
+            showModal: false,
+            loading: true
         };
     },
-    computed: {
-        totalPages() {
-            return Math.ceil(this.posts.length / this.pageSize);
-        },
-        displayedPosts() {
-            const start = (this.currentPage - 1) * this.pageSize;
-            const end = start + this.pageSize;
-            return this.posts.slice(start, end);
-        }
+
+    mounted() {
+        this.fetchPosts();
     },
     methods: {
+        onPostDeleted(id) {
+            this.posts = this.posts.filter(post => post.id !== id);
+            this.displayedPosts = this.displayedPosts.filter(post => post.id !== id);
+        },
+        deletePost(id) {
+            this.posts = this.posts.filter(post => post.id !== id);
+            this.displayedPosts = this.displayedPosts.filter(post => post.id !== id);
+        },
+        async fetchPosts() {
+            try {
+                fetch('http://localhost/public/api/posts')
+                    .then(response => {
+                        if (!response.ok) {
+                            this.loading = false;
+                            throw new Error('Network response was not ok');
+                        }
+
+                        return response.json();
+                    })
+                    .then(data => {
+                        this.posts = data;
+                        this.loading = false;
+                    })
+                    .catch(error => {
+                        this.loading = false;
+                        console.error('There has been a problem with your fetch operation:', error);
+                    });
+
+            } catch (error) {
+                console.error('There was an error fetching the posts!', error);
+            }
+
+
+
+        },
         previousPage() {
             this.currentPage -= 1;
         },
@@ -207,21 +204,58 @@ export default {
             document.querySelector('.error').style.display = 'none';
             this.showModal = false;
 
-            this.posts.push({
-                id: this.posts.length + 1,
-                title: title.value,
-                author: author.value,
-                short_desc: short_desc.value,
-                desc: description.value,
-                time: new Date().toLocaleString()
+            try {
+                fetch('http://localhost/public/api/post', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        title: title.value,
+                        author: author.value,
+                        short_desc: short_desc.value,
+                        desc: description.value,
+                        time: new Date().toISOString().slice(0, 19)
 
+
+                    })
+                })
+                    .then(response => {
+                        console.log(response)
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log(data);
+                        this.posts.push({
+                            id: data.id,
+                            title: title.value,
+                            author: author.value,
+                            short_desc: short_desc.value,
+                            desc: description.value,
+                            time: new Date().toLocaleString()
+                        }
+                        );
+                    })
+                    .catch(error => {
+                        console.error('There has been a problem with your fetch operation:', error);
+                    });
+            } catch (error) {
+                console.error('There was an error fetching the posts!', error);
             }
-            );
-            title.value = '';
-            author.value = '';
-            short_desc.value = '';
-            description.value = '';
         }
-    }
+    },
+    computed: {
+        totalPages() {
+            return Math.ceil(this.posts.length / this.pageSize);
+        },
+        displayedPosts() {
+            const start = (this.currentPage - 1) * this.pageSize;
+            const end = start + this.pageSize;
+            return this.posts.slice(start, end);
+        }
+    },
 };
 </script>

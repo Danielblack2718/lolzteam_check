@@ -134,6 +134,25 @@ body {
   border: 2px solid rgb(239, 100, 100) !important;
 }
 
+.loader {
+  border: 16px solid rgb(39, 39, 39);
+  /* Light grey */
+  border-top: 16px solid rgb(34, 142, 93);
+  /* Blue */
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 0.5s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 main {
   margin-top: 30px;
   width: 100%;
@@ -149,6 +168,7 @@ main {
   margin-bottom: 10px;
   background-color: #303030;
   transition: all 0.5s ease-in-out;
+  color: white;
 }
 .post__item:hover {
   background-color: #363636;
@@ -309,6 +329,11 @@ nav {
   background-color: rgb(239, 141, 141);
 }
 
+.posts {
+  display: flex;
+  justify-content: center;
+}
+
 .post {
   padding: 1em;
   width: 100vw;
@@ -320,6 +345,10 @@ nav {
   margin-top: 10px;
   display: flex;
   flex-direction: column;
+}
+.post.nothing {
+  transition: all 3s ease-in-out !important;
+  animation: UpToDown 3s ease-out;
 }
 .post .post__title {
   font-size: 25px;

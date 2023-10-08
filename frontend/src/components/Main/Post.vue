@@ -1,5 +1,5 @@
 <template>
-  <div class="post__item" :key="index" v-if="!isPostDeleted" @click="!admin ? goToPost(localPost.id) : null">
+  <div class="post__item" :key="localPost.id" v-if="!isPostDeleted" @click="!admin ? goToPost(localPost.id) : null">
     <span class="post__title">{{ localPost.title }}</span>
     <span class="post__short-desc">{{ localPost.short_desc }}</span>
     <div class="post__bottom">
@@ -46,8 +46,27 @@ export default {
       this.$router.push({ path: `/post/${postId}` });
     },
     deletePost() {
-      this.isPostDeleted = true,
-        this.showModal = false
+      try {
+        fetch(`http://localhost/public/api/post/${this.localPost.id}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+          },
+          body: JSON.stringify({
+            adminKey: this.adminKey
+          })
+        })
+          .then(response => response.json())
+          .then(result => {
+            console.log(result);
+            this.$emit('deleted', this.localPost.id);
+            this.showModal = false;
+          })
+          .catch(error => console.log(error));
+      } catch (e) {
+        console.log(e);
+      }
+
     },
     editPost() {
       this.showEditModal = false;
@@ -65,14 +84,15 @@ export default {
   },
   props: {
     post: Object,
-    admin: Boolean
+    admin: Boolean,
   },
   data() {
     return {
       localPost: this.post,
       showModal: false,
       isPostDeleted: false,
-      showEditModal: false
+      showEditModal: false,
+      adminKey: this.$cookies.get("adminKey")
     };
   }
 }

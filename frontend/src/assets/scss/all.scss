@@ -28,3 +28,23 @@ body {
 .error_input {
     border: 2px solid $red !important;
 }
+.loader {
+    border: 16px solid $bg-header;
+    /* Light grey */
+    border-top: 16px solid $green;
+    /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 0.5s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

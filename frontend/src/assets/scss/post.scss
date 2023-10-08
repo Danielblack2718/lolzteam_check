@@ -1,3 +1,7 @@
+.posts{
+display: flex;
+justify-content: center;
+}
 .post {
     padding: 1em;
     width: 100vw;
@@ -9,9 +13,12 @@
     margin-top: 10px;
     display: flex;
     flex-direction: column;
-
+    &.nothing{
+        transition: all 3s ease-in-out !important;
+        animation: UpToDown 3s ease-out;
+    }
     .post__title {
-        font-size: 25px;
+        font-size: 25px; 
         color: $white;
     }
 

@@ -48,7 +48,7 @@ export default {
         return;
       }
       document.querySelector('.error').style.display = 'none';
-      this.$cookies.set("adminKey", 'fsdfsdfsd');
+      this.$cookies.set("adminKey", 'admin');
           window.location.reload();
       try {
         const response = await this.$axios.post("/api/admin/login", {
