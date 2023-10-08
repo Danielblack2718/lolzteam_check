@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ImageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,6 +49,7 @@ use App\Http\Controllers\AdminController;
         Route::post('/admin/login', [AdminController::class, 'login']);
         Route::delete('/post/{id}', [PostController::class, 'destroy']);//Удаление поста
         Route::delete('/review/{id}', [ReviewController::class, 'destroy']);//Удаление отзыва
+        Route::post('/upload-image', [ImageController::class, 'upload']);
         Route::middleware('admin')->group(function () {
             Route::post('/admin/register', [AdminController::class, 'register']);
             Route::put('/review/{id}', [ReviewController::class, 'update']);  //Обновление отзыва

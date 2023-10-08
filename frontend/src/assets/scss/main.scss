@@ -96,7 +96,7 @@ nav {
         padding: 5px;
         border-radius: 5px;
         transition: all 0.5s;
-
+        cursor: pointer;
         &.active {
             font-weight: bold;
             background-color: #363636;

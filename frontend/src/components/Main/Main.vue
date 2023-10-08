@@ -12,21 +12,27 @@
         <div class="posts">
             <div v-if="loading" class="loader">
             </div>
-            <div v-else>
+            <div v-else style="width: 100%;">
+                <input v-model="searchQuery" placeholder="Поиск..." />
+
                 <span @click="showModal = true;" class="create_post pointer">Добавить пост</span>
                 <Modal v-if="showModal" @close="showModal = false" title="Добавить пост">
                     <label for="author">Автор поста</label>
-                    <input type="text" id="author" placeholder="Ваше имя">
+                    <input type="text" id="author" placeholder="Ваше имя" v-model="postForm.author">
                     <label for="title">Заголовок</label>
-                    <input type="text" id="title" placeholder="Заголовок">
+                    <input type="text" id="title" placeholder="Заголовок" v-model="postForm.title">
                     <label for="short_desc">Краткое описание поста</label>
-                    <textarea name="" id="short_desc" placeholder="Краткое описание поста"></textarea>
+                    <textarea name="" id="short_desc" placeholder="Краткое описание поста"
+                        v-model="postForm.short_desc"></textarea>
                     <label for="description">Описание поста</label>
-                    <textarea name="" id="description" placeholder="Описание поста"></textarea>
+                    <div style="max-height: 1000px;max-width: 900px;">
+                        <QuillEditor v-model="content"></QuillEditor>
+                    </div>
 
                     <div class="modal__bottom">
                         <span class="error">Не все поля заполнены</span>
                         <button class="button green" @click="addPost()">Добавить</button>
+
                     </div>
                 </Modal>
 
@@ -105,13 +111,15 @@ It imports the Post and Modal components and uses them to display the posts.
 import Post from './PostItem.vue';
 import Modal from '../Modal/Modal.vue';
 import sweetAlertMixin from '@/mixins/sweet-alert-mixin'
+import QuillEditor from '../Editor/QuillEditorCustom.vue';
 export default {
     name: 'MMain',
     emits: ['deleted'],
     mixins: [sweetAlertMixin],
     components: {
         Post,
-        Modal
+        Modal,
+        QuillEditor
     },
     props: {
         admin: Boolean
@@ -122,13 +130,29 @@ export default {
             pageSize: 10,
             posts: [],
             showModal: false,
-            loading: true
+            loading: true,
+            intervalId: null,
+            searchQuery: '',
+            postForm: {
+                author: '',
+                title: '',
+                short_desc: '',
+                desc: ''
+            }
         };
     },
-
+    beforeUnmount() { // замените beforeDestroy на beforeUnmount
+        if (this.intervalId) {
+            clearInterval(this.intervalId);
+        }
+    },
     mounted() {
         this.fetchPosts();
         this.userId = this.getOrCreateUserId();
+        this.intervalId = setInterval(() => {
+            this.fetchPosts();
+        }, 15000); // 15 секунд = 15000 мс
+        
     },
     methods: {
         getOrCreateUserId() {
@@ -211,33 +235,11 @@ export default {
             this.currentPage = page;
         },
         addPost() {
-            var title = document.getElementById('title');
-            var author = document.getElementById('author');
-            var short_desc = document.getElementById('short_desc');
-            var description = document.getElementById('description');
-            title.classList.remove('error_input');
-            author.classList.remove('error_input');
-            short_desc.classList.remove('error_input');
-            description.classList.remove('error_input');
-            if (author.value == '') {
+            const { author, title, short_desc } = this.postForm;
+            var description = document.querySelector('.ql-editor');
+            console.log(description)
+            if (author === '' || title === '' || short_desc === '' || description.innerHTML === '<p><br></p>') {
                 document.querySelector('.error').style.display = 'block';
-                author.classList.add('error_input');
-                return;
-            }
-            if (title.value == '') {
-                document.querySelector('.error').style.display = 'block';
-                title.classList.add('error_input');
-
-                return;
-            }
-            if (short_desc.value == '') {
-                document.querySelector('.error').style.display = 'block';
-                short_desc.classList.add('error_input');
-                return;
-            }
-            if (description.value == '') {
-                document.querySelector('.error').style.display = 'block';
-                description.classList.add('error_input');
                 return;
             }
             document.querySelector('.error').style.display = 'none';
@@ -250,10 +252,10 @@ export default {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        title: title.value,
-                        author: author.value,
-                        short_desc: short_desc.value,
-                        desc: description.value,
+                        title: title,
+                        author: author,
+                        short_desc: short_desc,
+                        desc: description.innerHTML,
                         user_id: this.userId
                     })
                 })
@@ -266,15 +268,16 @@ export default {
                     })
                     .then(data => {
                         console.log(data);
-                        this.showSuccessMessage("Успех", "Вы успешно добавили запись!");
+                        this.showSuccessMessage("Успех", "Вы успешно добавили запись")
                         this.posts.push({
                             id: data.id,
-                            title: title.value,
-                            author: author.value,
-                            short_desc: short_desc.value,
-                            desc: description.value,
-                            user_id: this.userId,
+                            title: title,
+                            author: author,
+                            short_desc: short_desc,
+                            desc: description.innerHTML,
                             created_at: data.created_at,
+                            user_id: this.userId,
+                            comments:[]
                         }
                         );
                     })
@@ -290,12 +293,21 @@ export default {
     },
     computed: {
         totalPages() {
-            return Math.ceil(this.posts.length / this.pageSize);
+            return Math.ceil(this.filteredPosts.length / this.pageSize);
+        },
+        filteredPosts() {
+            const searchQuery = this.searchQuery.toLowerCase();
+            return this.posts.filter(post =>
+                post.title.toLowerCase().includes(searchQuery) ||
+                post.author.toLowerCase().includes(searchQuery) ||
+                post.short_desc.toLowerCase().includes(searchQuery) ||
+                post.desc.toLowerCase().includes(searchQuery)
+            );
         },
         displayedPosts() {
             const start = (this.currentPage - 1) * this.pageSize;
             const end = start + this.pageSize;
-            return this.posts.slice(start, end);
+            return this.filteredPosts.slice(start, end);
         }
     },
 };

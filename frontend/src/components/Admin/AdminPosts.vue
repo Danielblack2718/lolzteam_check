@@ -12,27 +12,27 @@
             <div v-if="loading" class="loader">
             </div>
             <div v-else>
-                <div style="max-height: 1000px;max-width: 900px;"> 
-                    <QuillEditor></QuillEditor>
-                </div>
-                
+
+
                 <span @click="showModal = true;" class="create_post pointer">Добавить пост</span>
                 <Modal v-if="showModal" @close="showModal = false" title="Добавить пост">
                     <label for="author">Автор поста</label>
-                    <input type="text" id="author" placeholder="Ваше имя">
+                    <input type="text" id="author" placeholder="Ваше имя" v-model="postForm.author">
                     <label for="title">Заголовок</label>
-                    <input type="text" id="title" placeholder="Заголовок">
+                    <input type="text" id="title" placeholder="Заголовок" v-model="postForm.title">
                     <label for="short_desc">Краткое описание поста</label>
-                    <textarea name="" id="short_desc" placeholder="Краткое описание поста"></textarea>
+                    <textarea name="" id="short_desc" placeholder="Краткое описание поста"
+                        v-model="postForm.short_desc"></textarea>
                     <label for="description">Описание поста</label>
-                    <textarea name="" id="description" placeholder="Описание поста"></textarea>
+                    <div style="max-height: 1000px;max-width: 900px;">
+                        <QuillEditor v-model="content"></QuillEditor>
+                    </div>
 
                     <div class="modal__bottom">
                         <span class="error">Не все поля заполнены</span>
                         <button class="button green" @click="addPost()">Добавить</button>
 
                     </div>
-
                 </Modal>
                 <Post v-for="(post) in displayedPosts" :key="post.id" :post="JSON.parse(JSON.stringify(post))" :admin="true"
                     @deleted="onPostDeleted" />
@@ -105,6 +105,7 @@ It imports the Post and Modal components and uses them to display the posts.
  The Modal component is used to display a modal window when a post is clicked. 
 -->
 <script>
+import { ref } from 'vue'
 import Post from '../Main/PostItem.vue';
 import Modal from '../Modal/Modal.vue';
 import sweetAlertMixin from '@/mixins/sweet-alert-mixin'
@@ -118,6 +119,13 @@ export default {
         Modal,
         QuillEditor
     },
+    setup() {
+        const content = ref('<p>Initial content</p>');
+
+        return {
+            content,
+        };
+    },
     data() {
         return {
             currentPage: 1,
@@ -126,7 +134,13 @@ export default {
             showModal: false,
             loading: true,
             intervalId: null,
-            userId: null
+            userId: null,
+            postForm: {
+                author: '',
+                title: '',
+                short_desc: '',
+                desc: ''
+            }
         };
     },
     computed: {
@@ -232,33 +246,11 @@ export default {
             this.currentPage = page;
         },
         addPost() {
-            var title = document.getElementById('title');
-            var author = document.getElementById('author');
-            var short_desc = document.getElementById('short_desc');
-            var description = document.getElementById('description');
-            title.classList.remove('error_input');
-            author.classList.remove('error_input');
-            short_desc.classList.remove('error_input');
-            description.classList.remove('error_input');
-            if (author.value == '') {
+            const { author, title, short_desc } = this.postForm;
+            var description = document.querySelector('.ql-editor');
+            console.log(description)
+            if (author === '' || title === '' || short_desc === '' || description.innerHTML === '<p><br></p>') {
                 document.querySelector('.error').style.display = 'block';
-                author.classList.add('error_input');
-                return;
-            }
-            if (title.value == '') {
-                document.querySelector('.error').style.display = 'block';
-                title.classList.add('error_input');
-
-                return;
-            }
-            if (short_desc.value == '') {
-                document.querySelector('.error').style.display = 'block';
-                short_desc.classList.add('error_input');
-                return;
-            }
-            if (description.value == '') {
-                document.querySelector('.error').style.display = 'block';
-                description.classList.add('error_input');
                 return;
             }
             document.querySelector('.error').style.display = 'none';
@@ -271,10 +263,10 @@ export default {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        title: title.value,
-                        author: author.value,
-                        short_desc: short_desc.value,
-                        desc: description.value,
+                        title: title,
+                        author: author,
+                        short_desc: short_desc,
+                        desc: description.innerHTML,
                         user_id: this.userId
                     })
                 })
@@ -290,11 +282,13 @@ export default {
                         this.showSuccessMessage("Успех", "Вы успешно добавили запись")
                         this.posts.push({
                             id: data.id,
-                            title: title.value,
-                            author: author.value,
-                            short_desc: short_desc.value,
-                            desc: description.value,
+                            title: title,
+                            author: author,
+                            short_desc: short_desc,
+                            desc: description.innerHTML,
                             created_at: data.created_at,
+                            user_id: this.userId,
+                            comments:[]
                         }
                         );
                     })

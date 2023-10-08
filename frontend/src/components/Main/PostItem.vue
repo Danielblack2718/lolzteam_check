@@ -3,7 +3,7 @@
     <span class="post__title">{{ localPost.title }}</span>
     <span class="post__short-desc">{{ localPost.short_desc }}</span>
     <div class="post__bottom">
-      <span class="bottom__reviews">Кол-во отзывов: {{  localPost.comments.length }}</span>
+      <span class="bottom__reviews">Кол-во отзывов: {{ localPost.comments.length }}</span>
       <span class="bottom__author">Автор: {{ localPost.author }}</span>
       <span class="bottom__time">{{ localPost.created_at }}</span>
     </div>
@@ -20,19 +20,20 @@
       <button class="button red" @click="deletePost()">Удалить</button>
     </div>
   </Modal>
-  <Modal v-if="showEditModal" @close="showEditModal = false" title="Редактировать пост">
+  <Modal v-if="showEditModal" @close="cancelEdit" title="Редактировать пост">
     <label for="author">Автор поста</label>
-    <input type="text" id="author" placeholder="Ваше имя" :value="localPost.author">
+    <input type="text" id="author" placeholder="Ваше имя" v-model="tempAuthor">
     <label for="title">Заголовок</label>
-    <input type="text" id="title" placeholder="Заголовок" :value="localPost.title">
+    <input type="text" id="title" placeholder="Заголовок" v-model="tempTitle">
     <label for="short_desc">Краткое описание поста</label>
-    <textarea name="" id="short_desc" placeholder="Краткое описание поста" :value="localPost.short_desc"></textarea>
+    <textarea name="" id="short_desc" placeholder="Краткое описание поста" v-model="tempShortDesc"></textarea>
     <label for="description">Описание поста</label>
-    <textarea name="" id="description" placeholder="Описание поста" :value="localPost.desc"></textarea>
-    <label for="time"></label>
+    <div style="max-height: 1000px;max-width: 900px;">
+      <QuillEditor ref="quillEditor" v-model="tempContent"></QuillEditor>
+    </div>
     <div class="modal__bottom">
       <span class="error" id="error">Не все поля заполнены</span>
-      <button class="button green" @click="editPost()">Сохранить</button>
+      <button class="button green" @click="confirmEdit()">Сохранить</button>
     </div>
   </Modal>
 </template>
@@ -40,13 +41,38 @@
 <script>
 import Modal from '../Modal/Modal.vue';
 import sweetAlertMixin from '@/mixins/sweet-alert-mixin'
+import QuillEditor from '../Editor/QuillEditorCustom.vue';
 export default {
   name: 'MMain',
   mixins: [sweetAlertMixin],
   methods: {
+    confirmEdit() {
+      this.localPost.author = this.tempAuthor;
+      this.localPost.title = this.tempTitle;
+      this.localPost.short_desc = this.tempShortDesc;
+      this.localPost.desc = this.tempContent;
+      this.editPost();
+      this.showEditModal = false;
+    },
+    cancelEdit() {
+      this.showEditModal = false;
+    },
+    setQuillContent(content) {
+      this.$nextTick(() => {
+        const quillEditor = document.querySelector('.ql-editor');
+        if (quillEditor) {
+          quillEditor.innerHTML = content;
+        }
+      });
+    },
     editPostModal(e) {
       e.stopPropagation();
       this.showEditModal = true;
+      this.tempAuthor = this.localPost.author;
+      this.tempTitle = this.localPost.title;
+      this.tempShortDesc = this.localPost.short_desc;
+      this.tempContent = this.localPost.desc;
+      this.setQuillContent(this.localPost.desc);
     },
     deletePostModal(e) {
       e.stopPropagation();
@@ -121,10 +147,11 @@ export default {
     },
     editPost() {
       this.showEditModal = false;
-      const author = document.getElementById('author').value;
-      const title = document.getElementById('title').value;
-      const short_desc = document.getElementById('short_desc').value;
-      const desc = document.getElementById('description').value;
+      const author = this.tempAuthor;
+      const title = this.tempTitle;
+      const short_desc = this.tempShortDesc;
+      const desc = document.querySelector('.ql-editor').innerHTML;
+      console.log(desc)
       if (author == '' || title == '' || short_desc == '' || desc == '') {
         document.getElementById('error').style.display = 'block';
         return;
@@ -164,7 +191,8 @@ export default {
     }
   },
   components: {
-    Modal
+    Modal,
+    QuillEditor
   },
   props: {
     post: Object,
@@ -181,6 +209,11 @@ export default {
       showEditModal: false,
       adminKey: this.$cookies.get("adminKey"),
       userId: null,
+      content: 'авваыаываыва',
+      tempContent: '',
+      tempAuthor: '',
+      tempTitle: '',
+      tempShortDesc: '',
     };
   }
 }

@@ -6,8 +6,8 @@
       <span class="post__title">
         {{ post.title }}
       </span>
-      <span class="post__desc">
-        {{ post.desc }}
+      <span class="post__desc" v-html="post.desc">
+        
       </span>
       <div class="post__bottom">
         <span class="bottom__author">
