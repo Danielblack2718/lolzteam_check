@@ -13,8 +13,15 @@ class Admin extends Model
     protected $table = 'admins';
 
     // Определите поля, разрешенные для массового присвоения
-    protected $fillable = ['admin_key'];
-
+    protected $fillable = [
+        'login',
+        'pass',
+        'admin_key'
+    ];
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d H:i:s',
+        'updated_at' => 'datetime:Y-m-d H:i:s',
+    ];
     // Если у вас есть поля типа даты/времени, кроме created_at и updated_at, вы можете добавить их здесь
     //protected $dates = ['другие_даты'];
 

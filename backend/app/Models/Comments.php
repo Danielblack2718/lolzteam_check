@@ -14,8 +14,12 @@ class Comments extends Model
         'desc',
         'author',
         'time',
+        'user_id'
     ];
-
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d H:i:s',
+        'updated_at' => 'datetime:Y-m-d H:i:s',
+    ];
     public function comments()
     {
         return $this->hasMany(Comments::class);

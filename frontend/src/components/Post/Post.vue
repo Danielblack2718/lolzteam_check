@@ -14,7 +14,7 @@
           {{ post.author }}
         </span>
         <span class="bottom__time">
-          {{ post.time }}
+          {{ post.created_at }}
         </span>
       </div>
     </div>
@@ -76,6 +76,7 @@ export default {
           this.post = data;
         }
       } catch (error) {
+        
         console.error('There has been a problem with your fetch operation:', error);
       } finally {
         this.loading = false;

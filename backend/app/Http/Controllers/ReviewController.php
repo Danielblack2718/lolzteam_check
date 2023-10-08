@@ -22,7 +22,7 @@ class ReviewController extends Controller
             'author' => 'required',
             'desc' => 'required',
             'post_id' => 'required',
-            'time' => 'required',
+            'user_id' => 'required',
         ]);
 
         return Comments::create($request->all());

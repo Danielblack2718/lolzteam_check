@@ -1,7 +1,8 @@
-.posts{
-display: flex;
-justify-content: center;
+.posts {
+    display: flex;
+    justify-content: center;
 }
+
 .post {
     padding: 1em;
     width: 100vw;
@@ -13,12 +14,14 @@ justify-content: center;
     margin-top: 10px;
     display: flex;
     flex-direction: column;
-    &.nothing{
+
+    &.nothing {
         transition: all 3s ease-in-out !important;
         animation: UpToDown 3s ease-out;
     }
+
     .post__title {
-        font-size: 25px; 
+        font-size: 25px;
         color: $white;
     }
 
@@ -33,6 +36,10 @@ justify-content: center;
         gap: 10px;
         text-align: right;
         justify-content: end;
+
+        .bottom__reviews {
+            color: $gray;
+        }
 
         .bottom__author {
             color: $gray;
@@ -57,6 +64,7 @@ justify-content: center;
     display: flex;
     justify-content: space-between;
     background-color: $green;
+
     .review__h2 {
         font-size: 20px;
         color: $white;

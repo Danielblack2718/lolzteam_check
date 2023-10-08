@@ -30,7 +30,8 @@
                     </div>
                 </Modal>
 
-                <Post v-for="(post) in displayedPosts" :key="post.id" :post="JSON.parse(JSON.stringify(post))" @deleted="onPostDeleted"/>
+                <Post v-for="(post) in displayedPosts" :key="post.id" :post="JSON.parse(JSON.stringify(post))"
+                    @deleted="onPostDeleted" />
                 <div v-if="posts.length == 0" class="post__item">
                     Постов нет
                 </div>
@@ -101,11 +102,13 @@ It imports the Post and Modal components and uses them to display the posts.
  The Modal component is used to display a modal window when a post is clicked. 
 -->
 <script>
-import Post from './Post.vue';
+import Post from './PostItem.vue';
 import Modal from '../Modal/Modal.vue';
+import sweetAlertMixin from '@/mixins/sweet-alert-mixin'
 export default {
     name: 'MMain',
     emits: ['deleted'],
+    mixins: [sweetAlertMixin],
     components: {
         Post,
         Modal
@@ -125,8 +128,44 @@ export default {
 
     mounted() {
         this.fetchPosts();
+        this.userId = this.getOrCreateUserId();
     },
     methods: {
+        getOrCreateUserId() {
+            // Check if the user ID exists in cookies
+            let userId = this.getCookie('userId');
+
+            // If not, generate a new ID and set it as a cookie
+            if (!userId) {
+                userId = this.generateUserId();
+                this.setCookie('userId', userId, 365);
+            }
+
+            return userId;
+        },
+
+        generateUserId() {
+            // Generate a random string as the user ID
+            return Math.random().toString(36).substr(2, 9);
+        },
+
+        setCookie(name, value, days) {
+            const d = new Date();
+            d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+            let expires = "expires=" + d.toUTCString();
+            document.cookie = name + "=" + value + ";" + expires + ";path=/";
+        },
+
+        getCookie(name) {
+            const nameEQ = name + "=";
+            const ca = document.cookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        },
         onPostDeleted(id) {
             this.posts = this.posts.filter(post => post.id !== id);
             this.displayedPosts = this.displayedPosts.filter(post => post.id !== id);
@@ -215,9 +254,7 @@ export default {
                         author: author.value,
                         short_desc: short_desc.value,
                         desc: description.value,
-                        time: new Date().toISOString().slice(0, 19)
-
-
+                        user_id: this.userId
                     })
                 })
                     .then(response => {
@@ -229,20 +266,24 @@ export default {
                     })
                     .then(data => {
                         console.log(data);
+                        this.showSuccessMessage("Успех", "Вы успешно добавили запись!");
                         this.posts.push({
                             id: data.id,
                             title: title.value,
                             author: author.value,
                             short_desc: short_desc.value,
                             desc: description.value,
-                            time: new Date().toLocaleString()
+                            user_id: this.userId,
+                            created_at: data.created_at,
                         }
                         );
                     })
                     .catch(error => {
+                        this.showErrorMessage("Ошибка", "При добавлении произошла ошибка");
                         console.error('There has been a problem with your fetch operation:', error);
                     });
             } catch (error) {
+                this.showErrorMessage("Ошибка", "При добавлении произошла ошибка");
                 console.error('There was an error fetching the posts!', error);
             }
         }

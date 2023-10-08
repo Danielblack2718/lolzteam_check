@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,10 +45,11 @@ use App\Http\Controllers\ReviewController;
         Route::get('/reviews', [ReviewController::class, 'index']); //Получение всех отзывов
         Route::get('/review/{id}', [ReviewController::class, 'show']);   //Получение  одного отзыва
         Route::post('/review', [ReviewController::class, 'store']); //Создание отзыва
-        
+        Route::post('/admin/login', [AdminController::class, 'login']);
+        Route::delete('/post/{id}', [PostController::class, 'destroy']);//Удаление поста
+        Route::delete('/review/{id}', [ReviewController::class, 'destroy']);//Удаление отзыва
         Route::middleware('admin')->group(function () {
-            Route::delete('/post/{id}', [PostController::class, 'destroy']);   //Удаление поста
+            Route::post('/admin/register', [AdminController::class, 'register']);
             Route::put('/review/{id}', [ReviewController::class, 'update']);  //Обновление отзыва
-            Route::delete('/review/{id}', [ReviewController::class, 'destroy']); //Удаление отзыва
         });
 

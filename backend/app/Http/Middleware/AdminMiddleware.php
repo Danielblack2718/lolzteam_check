@@ -15,7 +15,8 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $adminKey = $request->input('adminKey');
+        $adminKey = $request->bearerToken();
+        
         $exists = \DB::table('admins')->where('admin_key', $adminKey)->exists();
 
     if (!$exists) {

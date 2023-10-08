@@ -12,6 +12,10 @@
             <div v-if="loading" class="loader">
             </div>
             <div v-else>
+                <div style="max-height: 1000px;max-width: 900px;"> 
+                    <QuillEditor></QuillEditor>
+                </div>
+                
                 <span @click="showModal = true;" class="create_post pointer">Добавить пост</span>
                 <Modal v-if="showModal" @close="showModal = false" title="Добавить пост">
                     <label for="author">Автор поста</label>
@@ -26,7 +30,9 @@
                     <div class="modal__bottom">
                         <span class="error">Не все поля заполнены</span>
                         <button class="button green" @click="addPost()">Добавить</button>
+
                     </div>
+
                 </Modal>
                 <Post v-for="(post) in displayedPosts" :key="post.id" :post="JSON.parse(JSON.stringify(post))" :admin="true"
                     @deleted="onPostDeleted" />
@@ -99,15 +105,18 @@ It imports the Post and Modal components and uses them to display the posts.
  The Modal component is used to display a modal window when a post is clicked. 
 -->
 <script>
-import Post from '../Main/Post.vue';
+import Post from '../Main/PostItem.vue';
 import Modal from '../Modal/Modal.vue';
-
+import sweetAlertMixin from '@/mixins/sweet-alert-mixin'
+import QuillEditor from '../Editor/QuillEditorCustom.vue';
 export default {
     name: 'MMain',
     emits: ['deleted'],
+    mixins: [sweetAlertMixin],
     components: {
         Post,
-        Modal
+        Modal,
+        QuillEditor
     },
     data() {
         return {
@@ -116,7 +125,8 @@ export default {
             posts: [],
             showModal: false,
             loading: true,
-            intervalId: null
+            intervalId: null,
+            userId: null
         };
     },
     computed: {
@@ -134,6 +144,8 @@ export default {
         this.intervalId = setInterval(() => {
             this.fetchPosts();
         }, 15000); // 15 секунд = 15000 мс
+        this.userId = this.getOrCreateUserId();
+
     },
     beforeUnmount() { // замените beforeDestroy на beforeUnmount
         if (this.intervalId) {
@@ -141,6 +153,41 @@ export default {
         }
     },
     methods: {
+        getOrCreateUserId() {
+            // Check if the user ID exists in cookies
+            let userId = this.getCookie('userId');
+
+            // If not, generate a new ID and set it as a cookie
+            if (!userId) {
+                userId = this.generateUserId();
+                this.setCookie('userId', userId, 365);
+            }
+
+            return userId;
+        },
+
+        generateUserId() {
+            // Generate a random string as the user ID
+            return Math.random().toString(36).substr(2, 9);
+        },
+
+        setCookie(name, value, days) {
+            const d = new Date();
+            d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+            let expires = "expires=" + d.toUTCString();
+            document.cookie = name + "=" + value + ";" + expires + ";path=/";
+        },
+
+        getCookie(name) {
+            const nameEQ = name + "=";
+            const ca = document.cookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        },
         onPostDeleted(id) {
             this.posts = this.posts.filter(post => post.id !== id);
             this.displayedPosts = this.displayedPosts.filter(post => post.id !== id);
@@ -151,16 +198,19 @@ export default {
                     .then(response => {
                         if (!response.ok) {
                             this.loading = false;
+
                             throw new Error('Network response was not ok');
                         }
 
                         return response.json();
                     })
                     .then(data => {
+
                         this.posts = data;
                         this.loading = false;
                     })
                     .catch(error => {
+
                         this.loading = false;
                         console.error('There has been a problem with your fetch operation:', error);
                     });
@@ -214,20 +264,48 @@ export default {
             document.querySelector('.error').style.display = 'none';
             this.showModal = false;
 
-            this.posts.push({
-                id: this.posts.length + 1,
-                title: title.value,
-                author: author.value,
-                short_desc: short_desc.value,
-                desc: description.value,
-                time: new Date().toLocaleString()
-
+            try {
+                fetch('http://localhost/public/api/post', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        title: title.value,
+                        author: author.value,
+                        short_desc: short_desc.value,
+                        desc: description.value,
+                        user_id: this.userId
+                    })
+                })
+                    .then(response => {
+                        console.log(response)
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log(data);
+                        this.showSuccessMessage("Успех", "Вы успешно добавили запись")
+                        this.posts.push({
+                            id: data.id,
+                            title: title.value,
+                            author: author.value,
+                            short_desc: short_desc.value,
+                            desc: description.value,
+                            created_at: data.created_at,
+                        }
+                        );
+                    })
+                    .catch(error => {
+                        this.showErrorMessage("Ошибка", "При добавлении произошла ошибка");
+                        console.error('There has been a problem with your fetch operation:', error);
+                    });
+            } catch (error) {
+                this.showErrorMessage("Ошибка", "При добавлении произошла ошибка");
+                console.error('There was an error fetching the posts!', error);
             }
-            );
-            title.value = '';
-            author.value = '';
-            short_desc.value = '';
-            description.value = '';
         }
     }
 };

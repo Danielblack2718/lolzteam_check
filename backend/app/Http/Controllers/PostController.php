@@ -27,13 +27,7 @@ class PostController extends Controller
             'short_desc' => 'required',
             'desc' => 'required',
             'author' => 'required',
-            'time' => 'required',
-        ], [
-            'title.required' => 'The title field is required.',
-            'short_desc.required' => 'The short_desc field is required.',
-            'desc.required' => 'The desc field is required.',
-            'author.required' => 'The author field is required.',
-            'time.required' => 'The time field is required.',
+            'user_id' => 'required',
         ]);
         
         return Post::create($validatedData);

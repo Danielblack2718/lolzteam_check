@@ -4,14 +4,28 @@ header {
     border-top: 0;
     border-radius: 0px 0px 10px 10px;
     padding: 20px;
-    max-width: 300px;
+    width: 100%;
     align-items: center;
     gap: 20px;
     background-color: $bg-header;
     animation: UpToDown 1s ease-in-out;
-    h1{
+    
+    .header__content {
+        display: flex;
+        gap: 20px;
+    }
+
+    h1 {
         font-size: 20px;
         font-weight: bold;
         color: $white;
+    }
+
+    a {
+        color: white;
+    }
+
+    button {
+        color: white;
     }
 }

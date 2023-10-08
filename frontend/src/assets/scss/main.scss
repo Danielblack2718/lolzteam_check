@@ -14,8 +14,9 @@ main {
     background-color: $bg-body;
     transition: all 0.5s ease-in-out;
     color: $white;
+    cursor: pointer;
 
-    
+
 
     &:hover {
         background-color: $bg-hover-post;
@@ -50,6 +51,10 @@ main {
         display: flex;
         gap: 10px;
         justify-content: end;
+
+        .bottom__reviews {
+            color: $gray;
+        }
 
         .bottom__author {
             color: $gray;
@@ -159,12 +164,13 @@ nav {
         background-color: $green-hover;
     }
 }
+
 .button {
     display: flex;
 
     width: 100%;
     height: 20px;
-
+    color: $white;
     border-radius: 8px;
     justify-content: center;
     text-align: center;
@@ -194,6 +200,7 @@ nav {
         }
     }
 }
+
 .btn_delete {
     margin-left: auto;
     background-color: $red;

@@ -1,7 +1,7 @@
 // router.js
 import { createRouter, createWebHistory } from 'vue-router';
 import MMain from './components/Home.vue'; 
-import MPost from './components/Post.vue'; 
+import MPost from './components/PostPage.vue'; 
 import MAdmin from './components/Admin.vue';
 
 const routes = [

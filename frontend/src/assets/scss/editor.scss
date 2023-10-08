@@ -1,0 +1,21 @@
+
+.ql-container {
+    background-color: $bg-body;
+    border: 1px solid $green !important;
+    /* Цвет фона редактора */
+}
+
+.ql-toolbar {
+    background-color: $bg-header;
+    border: 1px solid $green !important;
+    color: $white;
+    stroke: $white;
+    fill: $white;
+    /* Цвет фона панели инструментов */
+}
+
+.ql-editor {
+    color: $white;
+    
+    /* Цвет текста редактора */
+}

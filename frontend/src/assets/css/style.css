@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 * {
   padding: 0px;
@@ -91,15 +92,25 @@ header {
   border-top: 0;
   border-radius: 0px 0px 10px 10px;
   padding: 20px;
-  max-width: 300px;
+  width: 100%;
   align-items: center;
   gap: 20px;
   background-color: rgb(39, 39, 39);
   animation: UpToDown 1s ease-in-out;
 }
+header .header__content {
+  display: flex;
+  gap: 20px;
+}
 header h1 {
   font-size: 20px;
   font-weight: bold;
+  color: white;
+}
+header a {
+  color: white;
+}
+header button {
   color: white;
 }
 
@@ -169,6 +180,7 @@ main {
   background-color: #303030;
   transition: all 0.5s ease-in-out;
   color: white;
+  cursor: pointer;
 }
 .post__item:hover {
   background-color: #363636;
@@ -198,6 +210,9 @@ main {
   display: flex;
   gap: 10px;
   justify-content: end;
+}
+.post__item .post__bottom .bottom__reviews {
+  color: rgba(134, 134, 134, 0.783);
 }
 .post__item .post__bottom .bottom__author {
   color: rgba(134, 134, 134, 0.783);
@@ -291,6 +306,7 @@ nav {
   display: flex;
   width: 100%;
   height: 20px;
+  color: white;
   border-radius: 8px;
   justify-content: center;
   text-align: center;
@@ -363,6 +379,9 @@ nav {
   gap: 10px;
   text-align: right;
   justify-content: end;
+}
+.post .post__bottom .bottom__reviews {
+  color: rgba(134, 134, 134, 0.783);
 }
 .post .post__bottom .bottom__author {
   color: rgba(134, 134, 134, 0.783);
@@ -494,6 +513,26 @@ nav {
   flex-direction: column;
 }
 
+.ql-container {
+  background-color: #303030;
+  border: 1px solid rgb(34, 142, 93) !important;
+  /* Цвет фона редактора */
+}
+
+.ql-toolbar {
+  background-color: rgb(39, 39, 39);
+  border: 1px solid rgb(34, 142, 93) !important;
+  color: white;
+  stroke: white;
+  fill: white;
+  /* Цвет фона панели инструментов */
+}
+
+.ql-editor {
+  color: white;
+  /* Цвет текста редактора */
+}
+
 html {
   width: 100vw;
 }
@@ -504,7 +543,7 @@ body {
 
 header {
   max-width: 900px;
-  justify-content: center;
+  justify-content: space-between;
 }
 
 .admin {
@@ -565,10 +604,5 @@ header {
   100% {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-@media screen and (max-width: 930px) {
-  main {
-    padding: 15px;
   }
 }/*# sourceMappingURL=style.css.map */

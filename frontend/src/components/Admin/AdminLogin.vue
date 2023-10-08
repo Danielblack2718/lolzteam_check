@@ -12,6 +12,7 @@
       </label>
       <div class="modal__bottom col">
         <span class="error" style="margin-bottom:10px">Не все поля заполнены</span>
+        <span class="error unauth" style="margin-bottom:10px">Неправильный логин или пароль</span>
         <button type="submit">Войти</button>
       </div>
 
@@ -27,44 +28,53 @@ export default {
   data() {
     return {
       text: "",
-      password: ""    
+      password: ""
     };
   },
   methods: {
     async login() {
-      var login = document.getElementById('login');
-      var password = document.getElementById('password');
+      var loginInput = document.getElementById('login');
+      var passwordInput = document.getElementById('password');
 
-      login.classList.remove('error_input');
-      password.classList.remove('error_input');
-      if (this.text  == '') {
+      loginInput.classList.remove('error_input');
+      passwordInput.classList.remove('error_input');
+      if (loginInput.value == '') {
         document.querySelector('.error').style.display = 'block';
-        login.classList.add('error_input');
+        loginInput.classList.add('error_input');
         return;
       }
-      if (this.password == '') {
+      if (passwordInput.value == '') {
         document.querySelector('.error').style.display = 'block';
-        password.classList.add('error_input');
+        passwordInput.classList.add('error_input');
         return;
       }
+      const error_unauth = document.querySelector('.error.unauth');
+      if (error_unauth) error_unauth.style.display = 'none';
       document.querySelector('.error').style.display = 'none';
-      this.$cookies.set("adminKey", 'admin');
-          window.location.reload();
       try {
-        const response = await this.$axios.post("/api/admin/login", {
-          password: this.password,
-          login: this.login
+        const response = await this.$axios.post("http://localhost/public/api/admin/login", {
+          login: loginInput.value,
+          password: passwordInput.value
+        }, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
         });
-
-        if (response.data && response.data.adminKey) {
-          this.$cookies.set("adminKey", response.data.adminKey);
+        if (response.data && response.data['admin_key']) {
+          this.$cookies.set("adminKey", response.data['admin_key']);
           window.location.reload();
         }
+        else {
+          document.querySelector('.error.unauth').style.display = 'block';
+        }
       } catch (error) {
+
         console.error("Ошибка при входе:", error);
+        document.querySelector('.error.unauth').style.display = 'block';
       }
     }
   }
+
 };
 </script>
   
