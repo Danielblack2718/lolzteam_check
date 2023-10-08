@@ -13,7 +13,6 @@ return new class extends Migration
             $table->string('title');
             $table->text('short_desc');
             $table->text('desc')->nullable();
-            $table->timestamp('time');
             $table->string('author');
             $table->timestamps();
         });

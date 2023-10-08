@@ -11,10 +11,10 @@ return new class extends Migration
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
             $table->text('desc');
-            $table->timestamp('time')->default(now());
             $table->string('author');
             $table->unsignedBigInteger('post_id');
             $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
+            $table->string('user_id');
             $table->timestamps();
         });
     }
