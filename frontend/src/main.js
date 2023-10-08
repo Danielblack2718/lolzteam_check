@@ -2,7 +2,7 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
-import './assets/css/style.css';
+import './assets/scss/style.scss';
 import VueCookies from 'vue-cookies';
 import axios from 'axios';
 import VueSweetAlertPlugin from './plugins/sweet-alert-plugin'

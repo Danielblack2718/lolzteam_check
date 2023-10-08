@@ -17,7 +17,7 @@
 
 <script>
 
-import sweetAlertMixin from '@/mixins/sweet-alert-mixin'
+import sweetAlertMixin from '../mixins/sweet-alert-mixin'
 export default {
   name: 'MHeader',
   mixins: [sweetAlertMixin],

@@ -40,7 +40,7 @@
 
 <script>
 import Modal from '../Modal/Modal.vue';
-import sweetAlertMixin from '@/mixins/sweet-alert-mixin'
+import sweetAlertMixin from '../../mixins/sweet-alert-mixin'
 import QuillEditor from '../Editor/QuillEditorCustom.vue';
 export default {
   name: 'MMain',

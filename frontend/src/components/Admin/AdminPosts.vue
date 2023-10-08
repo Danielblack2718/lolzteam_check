@@ -108,7 +108,7 @@ It imports the Post and Modal components and uses them to display the posts.
 import { ref } from 'vue'
 import Post from '../Main/PostItem.vue';
 import Modal from '../Modal/Modal.vue';
-import sweetAlertMixin from '@/mixins/sweet-alert-mixin'
+import sweetAlertMixin from '../../mixins/sweet-alert-mixin'
 import QuillEditor from '../Editor/QuillEditorCustom.vue';
 export default {
     name: 'MMain',

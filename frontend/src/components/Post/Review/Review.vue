@@ -24,7 +24,7 @@
 <script>
 import MReviewItem from './ReviewItem.vue';
 import Modal from '../../Modal/Modal.vue';
-import sweetAlertMixin from '@/mixins/sweet-alert-mixin'
+import sweetAlertMixin from '../../../mixins/sweet-alert-mixin'
 export default {
     name: 'MReview',
     mixins: [sweetAlertMixin],
