@@ -132,7 +132,7 @@ export default {
 
             if (this.LocalReview == null) this.LocalReview = new Array();
             try {
-                fetch('http://localhost/public/api/review', {
+                fetch('/public/api/review', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

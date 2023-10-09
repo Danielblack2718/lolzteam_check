@@ -14,3 +14,11 @@ $bg-body: #303030;
 
 $bg-post: #303030;
 $bg-hover-post: #363636;
+
+
+body.dark{
+    --white: white;
+    --white:black;
+    $white: black;
+    $green: blue;
+}

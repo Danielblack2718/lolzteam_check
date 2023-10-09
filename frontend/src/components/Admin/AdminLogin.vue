@@ -52,7 +52,7 @@ export default {
       if (error_unauth) error_unauth.style.display = 'none';
       document.querySelector('.error').style.display = 'none';
       try {
-        const response = await this.$axios.post("http://localhost/public/api/admin/login", {
+        const response = await this.$axios.post("/public/api/admin/login", {
           login: loginInput.value,
           password: passwordInput.value
         }, {

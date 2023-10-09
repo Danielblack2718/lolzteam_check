@@ -25,8 +25,11 @@ COPY . .
 # Установите зависимости
 RUN composer install --prefer-dist --no-progress --no-suggest --optimize-autoloader --no-dev
 RUN sleep 10
-# Выполните миграции и добавьте пользователя в базу данных
 
+# Выполните миграции и добавьте пользователя в базу данных
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
 # Запустите Apache
 CMD ["apache2-foreground"]
+
+

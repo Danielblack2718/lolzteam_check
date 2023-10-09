@@ -141,7 +141,7 @@ export default {
             }
         };
     },
-    beforeUnmount() { // замените beforeDestroy на beforeUnmount
+    beforeUnmount() { 
         if (this.intervalId) {
             clearInterval(this.intervalId);
         }
@@ -151,15 +151,15 @@ export default {
         this.userId = this.getOrCreateUserId();
         this.intervalId = setInterval(() => {
             this.fetchPosts();
-        }, 15000); // 15 секунд = 15000 мс
+        }, 15000); 
         
     },
     methods: {
         getOrCreateUserId() {
-            // Check if the user ID exists in cookies
+            
             let userId = this.getCookie('userId');
 
-            // If not, generate a new ID and set it as a cookie
+            
             if (!userId) {
                 userId = this.generateUserId();
                 this.setCookie('userId', userId, 365);
@@ -169,7 +169,7 @@ export default {
         },
 
         generateUserId() {
-            // Generate a random string as the user ID
+            
             return Math.random().toString(36).substr(2, 9);
         },
 
@@ -200,7 +200,7 @@ export default {
         },
         async fetchPosts() {
             try {
-                fetch('http://localhost/public/api/posts')
+                fetch('/public/api/posts')
                     .then(response => {
                         if (!response.ok) {
                             this.loading = false;
@@ -246,7 +246,7 @@ export default {
             this.showModal = false;
 
             try {
-                fetch('http://localhost/public/api/post', {
+                fetch('/public/api/post', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
