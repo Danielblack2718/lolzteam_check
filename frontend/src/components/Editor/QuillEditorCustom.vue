@@ -23,7 +23,7 @@ export default {
                         const formData = new FormData();
                         formData.append("image", file);
                         console.log(formData)
-                        axios.post('/public/api/upload-image', formData)
+                        axios.post('http://localhost:8000/public/api/upload-image', formData)
                             .then(res => {
                                 console.log(res)
                                 resolve(res.data.url);

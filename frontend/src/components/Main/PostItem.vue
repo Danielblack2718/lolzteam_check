@@ -119,7 +119,7 @@ export default {
     },
     deletePost() {
       try {
-        fetch(`/public/api/post/${this.localPost.id}`, {
+        fetch(`http://localhost:8000/public/api/post/${this.localPost.id}`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json;charset=utf-8',
@@ -157,7 +157,7 @@ export default {
         return;
       }
       try {
-        fetch(`/public/api/post/${this.localPost.id}`, {
+        fetch(`http://localhost:8000/public/api/post/${this.localPost.id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json;charset=utf-8'

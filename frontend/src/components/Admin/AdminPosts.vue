@@ -208,7 +208,7 @@ export default {
         },
         async fetchPosts() {
             try {
-                fetch('/public/api/posts')
+                fetch('http://localhost:8000/public/public/api/posts')
                     .then(response => {
                         if (!response.ok) {
                             this.loading = false;
@@ -257,7 +257,7 @@ export default {
             this.showModal = false;
 
             try {
-                fetch('/public/api/post', {
+                fetch('http://localhost:8000/public/public/api/post', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
