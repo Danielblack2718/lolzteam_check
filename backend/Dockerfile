@@ -1,23 +1,32 @@
-# Dockerfile для проекта Laravel
-FROM php:7.4-fpm-alpine
+# Базовый образ
+FROM php:8.1-apache
 
-# Установка расширений PHP
-RUN docker-php-ext-install pdo pdo_mysql
+# Установите рабочий каталог
+WORKDIR /var/www/html
 
-# Установка композера
+# Установите расширения PHP
+RUN apt-get update && \
+    apt-get install -y \
+    libpq-dev \
+    libonig-dev \
+    libicu-dev \
+    zip \
+    unzip \
+    git \
+    curl && \
+    docker-php-ext-install pdo_pgsql mbstring intl pdo_mysql
+
+# Установите Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Установка рабочего каталога
-WORKDIR /var/www
-
-# Копирование файлов проекта
+# Копируйте файлы проекта в образ
 COPY . .
 
-# Установка зависимостей
-RUN composer install
+# Установите зависимости
+RUN composer install --prefer-dist --no-progress --no-suggest --optimize-autoloader --no-dev
+RUN sleep 10
+# Выполните миграции и добавьте пользователя в базу данных
 
-# Запуск миграций и добавление записи в таблицу admins
-RUN php artisan migrate --seed
 
-# Запуск проекта
-CMD ["php", "-S", "0.0.0.0:8000", "-t", "public"]
+# Запустите Apache
+CMD ["apache2-foreground"]
