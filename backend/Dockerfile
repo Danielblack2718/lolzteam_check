@@ -4,7 +4,7 @@ FROM php:8.1-apache
 # Установите рабочий каталог
 WORKDIR /var/www/html
 
-# Установите расширения PHP
+# Установите расширения PHP и MySQL клиента
 RUN apt-get update && \
     apt-get install -y \
     libpq-dev \
@@ -13,7 +13,8 @@ RUN apt-get update && \
     zip \
     unzip \
     git \
-    curl && \
+    curl \
+    default-mysql-client && \
     docker-php-ext-install pdo_pgsql mbstring intl pdo_mysql
 
 # Установите Composer
@@ -24,12 +25,16 @@ COPY . .
 
 # Установите зависимости
 RUN composer install --prefer-dist --no-progress --no-suggest --optimize-autoloader --no-dev
-RUN sleep 10
 
 # Выполните миграции и добавьте пользователя в базу данных
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
-# Запустите Apache
-CMD ["apache2-foreground"]
+# Копирование скрипта start.sh в корень файловой системы контейнера
+COPY start.sh /
 
+# Даем права на выполнение скрипту
+RUN chmod +x /start.sh
+
+# Команда для запуска скрипта start.sh
+CMD ["/start.sh"]
 

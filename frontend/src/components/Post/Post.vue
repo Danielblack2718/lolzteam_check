@@ -62,7 +62,7 @@ export default {
 
     async fetchPost() {
       try {
-        const response = await fetch(`http://localhost:8000/public/api/post/${this.id}`);
+        const response = await fetch(`http://localhost:80/public/api/post/${this.id}`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }

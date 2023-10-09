@@ -80,7 +80,7 @@ export default {
         deleteReview() {
             this.showModal = false;
             try {
-                fetch(`http://localhost:8000/public/api/review/${this.review.id}`, {
+                fetch(`http://localhost:80/public/api/review/${this.review.id}`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json;charset=utf-8',

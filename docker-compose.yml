@@ -1,12 +1,24 @@
 version: '3'
 
 services:
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    networks:
+      - app-network
+
   frontend:
     build:
       context: ./frontend
     ports:
       - "8080:8080"
-
+  
   backend:
     build:
       context: ./backend
@@ -16,16 +28,15 @@ services:
       - db
     networks:
       - app-network
-
-  db:
-    image: mysql:5.7
-    environment:
-      MYSQL_ROOT_PASSWORD: example
-      MYSQL_DATABASE: lolzteam
-    ports:
-      - "3306:3306"
+  init-backend:
+    build:
+      context: ./backend
+    command: ["./start.sh"]
+    depends_on:
+      - db
     networks:
       - app-network
+  
 
 networks:
   app-network:

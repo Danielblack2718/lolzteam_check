@@ -4,7 +4,8 @@ module.exports = defineConfig({
   transpileDependencies: true,
   devServer: {
     proxy: {
-      '/public/api': {
+      
+      '/api': {
         target: 'http://localhost', // Замените на URL вашего бэкенда
         changeOrigin: true,
       },
